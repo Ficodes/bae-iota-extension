@@ -1,0 +1,29 @@
+{
+  "name": "bae-iota-extension",
+  "version": "0.1.0",
+  "description": "BAE module for the integration with a private IOTA sub-tangle",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ficodes/bae-iota-extension.git"
+  },
+  "keywords": [
+    "BAE",
+    "FIWARE",
+    "IOTA"
+  ],
+  "author": "fdelavega",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Ficodes/bae-iota-extension/issues"
+  },
+  "homepage": "https://github.com/Ficodes/bae-iota-extension#readme",
+  "dependencies": {
+    "@iota/mam": "^0.7.3",
+    "request": "^2.88.0",
+    "express": "^4.17.1"
+  }
+}
