@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+    apis_db:
+        image: mysql:5.7
+        volumes:
+            - ./apis-data:/var/lib/mysql
+        networks:
+            main:
+        environment:
+            - MYSQL_ROOT_PASSWORD=my-secret-pw
+
+    apis:
+        image: fiware/biz-ecosystem-apis:v7.6.0
+        #image: apis-sync
+        ports:
+            - "4848:4848"
+            - "8080:8080"
+        links:
+            - apis_db
+            - iota
+        depends_on:
+            - apis_db
+        networks:
+            main:
+                aliases:
+                    - apis.docker
+        volumes:
+            - ./apis-wars:/apis/wars-ext
+            - ./apis-config:/etc/default/tmf/
+        environment:
+            - MYSQL_ROOT_PASSWORD=my-secret-pw
+            - MYSQL_HOST=apis_db
+
+    iota:
+        image: bae-iota
+        links:
+            - apis_db
+        networks:
+            main:
+                aliases:
+                    - bae.iota.docker
+
+networks:
+    main:
+        external: true
