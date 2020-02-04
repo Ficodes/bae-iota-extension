@@ -1,12 +1,16 @@
+const bodyParser = require('body-parser');
 const express = require('express')
 const request = require('request')
 const inventory = require('./lib/inventory')
 
 const inventoryURL = 'http://apis.docker:8080/DSProductInventory/api/productInventory/v2/hub'
+const callbackURL = 'http://bae.iota.docker:3000/inventory'
+
 const port = 3000;
 
 // Initialize express routes
 const app = express()
+app.use(bodyParser.json());
 
 app.post('/inventory', inventory.notificationHandler)
 
@@ -17,7 +21,6 @@ const init = () => {
 }
 
 const makeSubcription = () => {
-    let callbackURL = 'http://bae.iota.docker/inventory'
     let data = {
         callback: callbackURL
     };
@@ -28,8 +31,8 @@ const makeSubcription = () => {
 
     let req = {
         method: 'POST',
-        url: createUrl(),
-        headers: inventoryURL,
+        url: inventoryURL,
+        headers: headers,
         body: JSON.stringify(data)
     };
 
@@ -44,7 +47,7 @@ const createInventorySubscription = () => {
     request.get(inventoryURL, (err, response, body) => {
         if (response.statusCode === 200) {
             let hubs = JSON.parse(body);
-            if (hubs.filter((x) => x.callback === callbackUrl).length > 0) {
+            if (hubs.filter((x) => x.callback === callbackURL).length > 0) {
                 init()
             } else {
                 makeSubcription()
